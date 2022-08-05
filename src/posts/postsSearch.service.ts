@@ -11,8 +11,8 @@ export default class PostsSearchService {
         private readonly elasticsearchService: ElasticsearchService
     ) { }
 
-    /* 
-    FUNCTION FOR INDEXING POSTS FOR ELATICSEARCH
+    /**
+     * @FUNCTION for indexing posts for @ElasticSearch
     */
     async indexPost(post: Post) {
         return this.elasticsearchService.index<PostSearchDocument>({
@@ -20,15 +20,15 @@ export default class PostsSearchService {
             document: {
                 id: post.id,
                 title: post.title,
-                content: post.content,
+                paragraphs: post.paragraphs,
                 authorId: post.author.id
             }
         });
     }
 
-    /* 
-    FUNCTION TO SEARCH POSTS USING ELASTICSEARCH
-    */
+    /**
+     * @FUNCTION to search posts with @param text using @ElasticSearch
+     */
     async search(text: string, offset?: number, limit?: number, startId = 0) {
         let separateCount = 0;
         if (startId) {
@@ -43,7 +43,7 @@ export default class PostsSearchService {
                     should: {
                         multi_match: {
                             query: text,
-                            fields: ['title', 'content'],
+                            fields: ['title', 'paragraphs'],
                         },
                     },
                     filter: {
@@ -64,9 +64,9 @@ export default class PostsSearchService {
         };
     }
 
-    /* 
-    HELPER FUNCTION FOR SEARCH TO COUNT THE NUMBER OF POSTS FOUND
-    */
+    /**
+     * @HelperFunction to count the number of posts found
+     */
     async count(query: string, fields: string[]) {
         const { count } = await this.elasticsearchService.count({
             index: this.index,
@@ -82,9 +82,9 @@ export default class PostsSearchService {
         return count;
     }
 
-    /* 
-    FUNCTION TO REMOVE DOCUMENT FROM ELASTICSEARCH
-    */
+    /**
+     * @Function to remove document from @ElasticSearch
+     */
     async remove(postId: number) {
         this.elasticsearchService.deleteByQuery({
             index: this.index,
@@ -103,7 +103,7 @@ export default class PostsSearchService {
         const newDocument: PostSearchDocument = {
             id: post.id,
             title: post.title,
-            content: post.content,
+            paragraphs: post.paragraphs,
             authorId: post.author.id
         };
 

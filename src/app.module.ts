@@ -7,8 +7,6 @@ import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { CategoriesModule } from './categories/categories.module';
 import { FilesModule } from './files/files.module';
-import { PrivateFilesModule } from './privateFiles/privateFiles.module';
-import { PrivateFilesService } from './privateFiles/privateFiles.service';
 import { SearchModule } from './search/search.module';
 
 @Module({
@@ -37,7 +35,6 @@ import { SearchModule } from './search/search.module';
     AuthenticationModule,
     CategoriesModule,
     FilesModule,
-    PrivateFilesModule,
     SearchModule
   ],
   controllers: [],

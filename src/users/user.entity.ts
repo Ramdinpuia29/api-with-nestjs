@@ -2,8 +2,8 @@ import { Exclude } from "class-transformer";
 import Post from "../posts/post.entity";
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Address from "./address.entity";
-import PublicFile from "src/files/publicFile.entity";
-import PrivateFile from "src/privateFiles/privateFile.entity";
+import PublicFile from "src/files/entities/public-file.entity";
+import PrivateFile from "src/files/entities/private-file.entity";
 
 @Entity()
 class User {

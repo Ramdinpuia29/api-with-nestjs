@@ -17,16 +17,19 @@ export class PostsService {
         private postsSearchService: PostsSearchService
     ) { }
 
-    /* 
-    FUNCTION TO GET ALL POSTS
-    */
+    /**
+     * @Function to get all posts from the database
+     * @returns All the posts from the database
+     */
     getAllPosts() {
         return this.postsRepository.find({ relations: ['author'] });
     }
 
-    /* 
-    FUNCTION TO GET POST BY ID
-    */
+    /**
+     * @Function to get a post with an id
+     * @param id An id of a post. A post with this id should exist in the database
+     * @returns The details of the post of the id
+     */
     async getPostById(id: number) {
         const post = await this.postsRepository.findOne({ where: { id } });
         if (post) {
@@ -35,9 +38,12 @@ export class PostsService {
         throw new PostNotFoundException(id);
     }
 
-    /* 
-    FUNCTION TO CREATE NEW POST
-    */
+    /**
+     * @Function to create a new post
+     * @param post The data of the post to be created
+     * @param user An user data. The user should exist in the database
+     * @returns The details of the created post.
+     */
     async createPost(post: CreatePostDto, user: User) {
         const newPost = this.postsRepository.create({
             ...post,
@@ -48,9 +54,12 @@ export class PostsService {
         return newPost;
     }
 
-    /* 
-    FUNCTION TO UPDATE POST BY ID
-    */
+    /**
+     * @Function to update an existing post
+     * @param id An id of a post. A post with this id should exist in the database
+     * @param post The data of the post to be updated
+     * @returns The details of the updated post
+     */
     async updatePost(id: number, post: UpdatePostDto) {
         await this.postsRepository.update(id, post);
         const updatedPost = await this.postsRepository.findOne({ where: { id }, relations: ['author'] });
@@ -61,9 +70,10 @@ export class PostsService {
         throw new PostNotFoundException(id);
     };
 
-    /* 
-    FUNCTION TO DELETE POST BY ID
-    */
+    /**
+     * @Function to delete a post from the database
+     * @param id An id of a post. A post with this id should exist in the database
+     */
     async deletePost(id: number) {
         const deleteResponse = await this.postsRepository.delete(id);
         if (!deleteResponse.affected) {
@@ -72,10 +82,14 @@ export class PostsService {
         await this.postsSearchService.remove(id);
     };
 
-    /* 
-    FUNCTION TO SEARCH POST USING 'text' QUERY
-    IT WILL RETURN THE ITEMS AND COUNT OF THE ITEMS
-    */
+    /**
+     * @Function to search a post that contains the query string
+     * @param text A string which a post should contain
+     * @param offset The offset for the searched posts
+     * @param limit Maximum number of posts to be returned
+     * @param startId The starting id
+     * @returns The posts found with the total number of the posts found
+     */
     async searchForPosts(text: string, offset?: number, limit?: number, startId?: number) {
         const { results, count } = await this.postsSearchService.search(text, offset, limit, startId);
         const ids = results.map((result) => result.id);
