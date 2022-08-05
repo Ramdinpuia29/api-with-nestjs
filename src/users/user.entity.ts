@@ -8,7 +8,7 @@ import PrivateFile from "src/privateFiles/privateFile.entity";
 @Entity()
 class User {
     @PrimaryGeneratedColumn()
-    public id?: number;
+    public id: number;
 
     @Column({ unique: true })
     public email: string;
@@ -36,6 +36,10 @@ class User {
 
     @OneToMany(() => PrivateFile, (file: PrivateFile) => file.owner)
     public files?: PrivateFile[];
+
+    @Column({ nullable: true })
+    @Exclude()
+    public currentHashedRefreshToken?: string;
 }
 
 export default User;

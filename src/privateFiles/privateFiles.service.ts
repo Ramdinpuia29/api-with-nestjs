@@ -14,6 +14,9 @@ export class PrivateFilesService {
         private readonly configService: ConfigService
     ) { };
 
+    /* 
+    FUNCTION TO UPLOAD PRIVATE FILES TO AWS BUCKET
+    */
     async uploadPrivateFile(dataBuffer: Buffer, ownerId: number, filename: string) {
         const s3 = new S3();
         const uploadResult = await s3.upload({
@@ -32,6 +35,9 @@ export class PrivateFilesService {
         return newFile;
     }
 
+    /* 
+    FUNCTION TO RETRIEVE PRIVATE FILES FROM AWS BUCKET
+    */
     public async getPrivateFile(fileId: number) {
         const s3 = new S3();
         const fileInfo = await this.privateFilesRepository.findOne({ where: { id: fileId }, relations: ['owner'] });
@@ -49,6 +55,9 @@ export class PrivateFilesService {
         throw new NotFoundException();
     }
 
+    /* 
+    FUNCTION TO GENERATE FILE URL FROM AWS BUCKET
+    */
     public async generatePresignedUrl(key: string) {
         const s3 = new S3();
 

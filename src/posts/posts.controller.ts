@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
 import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
 import RequestWithUser from 'src/authentication/requestWithUser.interface';
 import FindOneParams from 'src/utils/findOneParams';
@@ -13,7 +13,10 @@ export class PostsController {
     ) { }
 
     @Get()
-    getAllPosts() {
+    async getPosts(@Query('search') search: string) {
+        if (search) {
+            return this.postsService.searchForPosts(search);
+        }
         return this.postsService.getAllPosts();
     }
 

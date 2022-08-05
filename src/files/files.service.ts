@@ -14,6 +14,9 @@ export class FilesService {
         private readonly configService: ConfigService
     ) { }
 
+    /* 
+    FUNCTION TO UPLOAD PUBLIC FILE TO AWS BUCKET
+    */
     async uploadPublicFile(dataBuffer: Buffer, filename: string) {
         const s3 = new S3();
         const uploadResult = await s3.upload({
@@ -30,6 +33,9 @@ export class FilesService {
         return newFile;
     };
 
+    /* 
+    FUNCTION TO DELETE FILE FROM AWS BUCKET
+    */
     async deletePublicFile(fileId: number) {
         const file = await this.publicFilesRepository.findOne({ where: { id: fileId } });
         const s3 = new S3();

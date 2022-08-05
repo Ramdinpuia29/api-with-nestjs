@@ -15,6 +15,9 @@ export class AuthenticationService {
         private readonly configService: ConfigService
     ) { }
 
+    /* 
+    FUNCTION FOR REGISTERING NEW USER
+    */
     public async register(registrationData: RegisterDto) {
         const hashedPassword = await bcrypt.hash(registrationData.password, 10);
         try {
@@ -32,6 +35,48 @@ export class AuthenticationService {
         }
     }
 
+    /* 
+    FUNCTION TO GET THE ACCESS TOKEN COOKIE
+    */
+    public getCookieWithJwtAccessToken(userId: number) {
+        const payload: TokenPayload = { userId };
+        const token = this.jwtService.sign(payload, {
+            secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
+            expiresIn: `${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s`
+        });
+        return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPiRATION_TIME')}`;
+    }
+
+    /* 
+    FUNCTION TO GET THE REFRESH TOKEN COOKIE
+    */
+    public getCookieWithJwtRefreshToken(userId: number) {
+        const payload: TokenPayload = { userId };
+        const token = this.jwtService.sign(payload, {
+            secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
+            expiresIn: `${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}s`
+        });
+        const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPiRATION_TIME')}`;
+        return {
+            cookie,
+            token
+        };
+    }
+
+    /* 
+    FUNCTION TO GET COOKIES FOR LOGGING OUT
+    */
+    public getCookieForLogOut() {
+        return [
+            'Authentication=; HttpOnly; Path=/; Max-Age=0',
+            'Refresh=; HttpOnly; Path=/; Max-Age=0'
+
+        ];
+    }
+
+    /* 
+    FUNCTION TO LOG IN / GET THE AUTHENTICATED USER
+    */
     public async getAuthenticatedUser(email: string, plainTextPassword: string) {
         try {
             const user = await this.usersService.getByEmail(email);
@@ -42,20 +87,13 @@ export class AuthenticationService {
         }
     }
 
+    /* 
+    HELPER FUNCTION TO VERIFY IF PLAIN PASSWORD MATCHED THE HASHED PASSWORD IN DB
+    */
     private async verifyPassword(plainTextPassword: string, hashedPassword: string) {
         const isPasswordMatching = await bcrypt.compare(plainTextPassword, hashedPassword);
         if (!isPasswordMatching) {
             throw new HttpException('Wrong credential provided', HttpStatus.BAD_REQUEST);
         }
     };
-
-    public getCookieWithJwtToken(userId: number) {
-        const payload: TokenPayload = { userId };
-        const token = this.jwtService.sign(payload);
-        return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPiRATION_TIME')}`;
-    }
-
-    public getCookieForLogOut() {
-        return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
-    }
 }

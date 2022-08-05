@@ -9,6 +9,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { FilesModule } from './files/files.module';
 import { PrivateFilesModule } from './privateFiles/privateFiles.module';
 import { PrivateFilesService } from './privateFiles/privateFiles.service';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -20,8 +21,10 @@ import { PrivateFilesService } from './privateFiles/privateFiles.service';
         POSTGRES_USER: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
-        JWT_SECRET: Joi.string().required(),
-        JWT_EXPIRATION_TIME: Joi.string().required(),
+        JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
+        JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
+        JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
         AWS_REGION: Joi.string().required(),
         AWS_ACCESS_KEY_ID: Joi.string().required(),
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
@@ -34,7 +37,8 @@ import { PrivateFilesService } from './privateFiles/privateFiles.service';
     AuthenticationModule,
     CategoriesModule,
     FilesModule,
-    PrivateFilesModule
+    PrivateFilesModule,
+    SearchModule
   ],
   controllers: [],
   providers: [],

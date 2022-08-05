@@ -13,8 +13,8 @@ import { PrivateFilesModule } from 'src/privateFiles/privateFiles.module';
     FilesModule,
     PrivateFilesModule
   ],
+  controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],
-  controllers: [UsersController],
 })
 export class UsersModule { }
