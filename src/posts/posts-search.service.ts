@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ElasticsearchService } from "@nestjs/elasticsearch";
 import Post from "./post.entity";
-import PostSearchDocument from "./types/postSearchDocument.interface";
+import PostSearchDocument from "./types/post-search-document.interface";
 
 @Injectable()
 export default class PostsSearchService {
@@ -32,7 +32,7 @@ export default class PostsSearchService {
     async search(text: string, offset?: number, limit?: number, startId = 0) {
         let separateCount = 0;
         if (startId) {
-            separateCount = await this.count(text, ['title', 'content']);
+            separateCount = await this.count(text, ['title', 'paragraphs']);
         }
         const { hits } = await this.elasticsearchService.search<PostSearchDocument>({
             index: this.index,
@@ -54,7 +54,7 @@ export default class PostsSearchService {
                         }
                     }
                 }
-            }
+            },
         });
         const count = hits.total;
         const results = hits.hits.map((item) => item._source);

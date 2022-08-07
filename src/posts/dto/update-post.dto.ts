@@ -8,7 +8,7 @@ class UpdatePostDto {
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    content: string;
+    paragrapsh: string[];
 
     @IsString()
     @IsNotEmpty()

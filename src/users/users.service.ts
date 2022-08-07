@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, InternalServerErrorException, No
 import { InjectRepository } from '@nestjs/typeorm';
 import { FilesService } from 'src/files/files.service';
 import { DataSource, Repository } from 'typeorm';
-import CreateUserDto from './dto/createUser.dto';
+import CreateUserDto from './dto/create-user.dto';
 import User from './user.entity';
 import * as bcrypt from 'bcrypt';
 

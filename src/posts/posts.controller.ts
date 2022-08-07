@@ -1,9 +1,10 @@
 import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Patch, Post, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
-import RequestWithUser from 'src/authentication/requestWithUser.interface';
-import FindOneParams from 'src/utils/findOneParams';
-import CreatePostDto from './dto/createPost.dto';
-import UpdatePostDto from './dto/updatePost.dto';
+import RequestWithUser from 'src/authentication/request-with-user.interface';
+import FindOneParams from 'src/utils/find-one-params';
+import { PaginationParams } from 'src/utils/types/pagination-params';
+import CreatePostDto from './dto/create-post.dto';
+import UpdatePostDto from './dto/update-post.dto';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -14,11 +15,14 @@ export class PostsController {
     ) { }
 
     @Get()
-    async getPosts(@Query('search') search: string) {
+    async getPosts(
+        @Query('search') search: string,
+        @Query() { offset, limit, startId }: PaginationParams
+    ) {
         if (search) {
-            return this.postsService.searchForPosts(search);
+            return this.postsService.searchForPosts(search, offset, limit);
         }
-        return this.postsService.getAllPosts();
+        return this.postsService.getAllPosts(offset, limit, startId);
     }
 
     @Get(':id')

@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import recursivelyStripNullValues from "./recursivelyStripNullValues";
+import recursivelyStripNullValues from "./recursively-strip-null-values";
 
 @Injectable()
 export class ExcludeNullInterceptor implements NestInterceptor {

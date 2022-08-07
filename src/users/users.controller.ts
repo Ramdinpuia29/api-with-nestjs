@@ -1,10 +1,10 @@
 import { Controller, Delete, Get, Param, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
-import RequestWithUser from 'src/authentication/requestWithUser.interface';
+import RequestWithUser from 'src/authentication/request-with-user.interface';
 import { UsersService } from './users.service';
 import { Express, Response } from "express";
-import FindOneParams from 'src/utils/findOneParams';
+import FindOneParams from 'src/utils/find-one-params';
 
 @Controller('users')
 export class UsersController {

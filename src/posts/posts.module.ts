@@ -4,7 +4,7 @@ import { SearchModule } from 'src/search/search.module';
 import Post from './post.entity';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
-import PostsSearchService from './postsSearch.service';
+import PostsSearchService from './posts-search.service';
 
 @Module({
   imports: [

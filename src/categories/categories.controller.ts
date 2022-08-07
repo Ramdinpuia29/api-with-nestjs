@@ -1,9 +1,9 @@
 import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Patch, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
-import FindOneParams from 'src/utils/findOneParams';
+import FindOneParams from 'src/utils/find-one-params';
 import { CategoriesService } from './categories.service';
-import CreateCategoryDto from './dto/createCategory.dto';
-import UpdateCategoryDto from './dto/updateCategory.dto';
+import CreateCategoryDto from './dto/create-category.dto';
+import UpdateCategoryDto from './dto/update-category.dto';
 
 @Controller('categories')
 @UseInterceptors(ClassSerializerInterceptor)
